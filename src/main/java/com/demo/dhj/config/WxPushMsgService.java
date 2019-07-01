@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 /**
@@ -19,12 +18,10 @@ import me.chanjar.weixin.common.error.WxErrorException;
  * <p>
  *
  * @author denghaijing
- * @since 0.2.0
  */
 @Data
+@Slf4j
 public class WxPushMsgService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(WxPushMsgService.class);
 
     @Autowired
     private WxMaService wxMaService;
@@ -45,15 +42,21 @@ public class WxPushMsgService {
      */
     private String templatePage;
 
-    public String pushMsg(String openid, String formId, List<String> list, String params) throws WxErrorException {
+    /**
+     * 请求发送模板信息url
+     */
+    private final String sendTemplateUrl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=";
+
+    public String pushMsg(String openid, String formId, List<String> list, String toPage) throws WxErrorException {
         //获取access_token
         String accessToken = this.wxMaService.getAccessToken();
-        String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + accessToken;
+        //拼接请求发送模板信息url
+        String url = sendTemplateUrl + accessToken;
 
         Map<String, Object> wxMssVo = new HashMap<>(5);
         wxMssVo.put("touser", openid);
         wxMssVo.put("template_id", this.templateId);
-        wxMssVo.put("page", this.templatePage + params);
+        wxMssVo.put("page", toPage);
         wxMssVo.put("form_id", formId);
         wxMssVo.put("data", generateTemplateData(list));
 

@@ -4,38 +4,33 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.demo.dhj.config.WxPushMsgService;
 import com.demo.dhj.dto.PushMsgRequestDTO;
-import com.demo.dhj.service.ITestService;
+import com.google.common.collect.Lists;
 
+import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 /**
- * TODO 〈一句话功能简述〉
+ * 测试发送模板信息controller
  * <p>
- * 〈功能详细描述〉 描述
  *
  * @author denghaijing
- * @date 2019/7/1
- * @since [产品/模块版本]
  */
 @RestController
-public class TestController {
+@Slf4j
+public class TestPushMsgController {
 
     @Autowired
-    private ITestService testService;
-
-    @GetMapping("test")
-    public String test(){
-        return "hello world";
-    }
+    private WxPushMsgService wxPushMsgService;
 
     @PostMapping("/pushMsg")
-    public ResponseEntity<String> pushMsg(@RequestBody @Valid PushMsgRequestDTO requestDTO) throws WxErrorException, WxErrorException {
-        testService.pushMsg(requestDTO);
+    public ResponseEntity<String> pushMsg(@RequestBody @Valid PushMsgRequestDTO dto) throws WxErrorException {
+        String result = wxPushMsgService.pushMsg(dto.getOpenid(), dto.getFormid(), Lists.newArrayList(dto.getData()), "/pages/report/report?param=xxx");
+        log.info("mini app push message result is:{}", result);
         return ResponseEntity.ok().build();
 
     }

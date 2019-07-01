@@ -9,7 +9,6 @@ import lombok.Data;
  * <p>
  *
  * @author denghaijing
- * @since 0.1.0
  */
 @ConfigurationProperties(prefix = "wechat.miniapp")
 @Data
@@ -29,10 +28,5 @@ public class WxMiniAppProperties {
      * 模板id
      */
     private String templateId;
-
-    /**
-     * 消息模板中的页面跳转路径
-     */
-    private String templatePage;
 
 }

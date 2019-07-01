@@ -18,7 +18,6 @@ import cn.binarywang.wx.miniapp.config.WxMaInMemoryConfig;
  * <p>
  *
  * @author denghaijing
- * @since 0.1.0
  */
 @Configuration
 @ConditionalOnClass(WxMaService.class)
@@ -53,7 +52,6 @@ public class WxMaConfiguration {
     @ConditionalOnMissingBean
     public WxPushMsgService wxPushMsgService() {
         WxPushMsgService wxPushMsgService = new WxPushMsgService();
-        wxPushMsgService.setTemplatePage(this.properties.getTemplatePage());
         wxPushMsgService.setTemplateId(this.properties.getTemplateId());
         return wxPushMsgService;
     }

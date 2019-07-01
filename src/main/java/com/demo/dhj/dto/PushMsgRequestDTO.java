@@ -10,7 +10,6 @@ import lombok.Data;
  * <p>
  *
  * @author denghaijing
- * @since 1.0
  */
 @Data
 public class PushMsgRequestDTO {
@@ -23,6 +22,5 @@ public class PushMsgRequestDTO {
 
     @NotNull(message = "推送文字不能为空")
     private String[] data;
-
 
 }
